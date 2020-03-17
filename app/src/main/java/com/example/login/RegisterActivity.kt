@@ -1,12 +1,15 @@
 package com.example.login
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.RadioButton
+import android.widget.Toast
 import com.example.login.MainActivity.Companion.USER_RESULT
 import com.example.login.model.User
 import kotlinx.android.synthetic.main.activity_register.*
@@ -33,6 +36,13 @@ class RegisterActivity : AppCompatActivity() {
         when(item.itemId) {
             //R -> objeto do res
             R.id.registrarBtn -> {
+                if (radioGroup.getCheckedRadioButtonId() == -1) {
+                    registerAlert("Selecione seu sexo")
+                    return false
+                } else if (passwordField.editText!!.text.toString().trim().length < 6) {
+                   registerAlert("Sua senha precisa ter no mínimo 6 caracteres")
+                    return false
+                }
                 val user = createUser()
                 sendUser(user)
             }
@@ -59,6 +69,18 @@ class RegisterActivity : AppCompatActivity() {
             disciplinaField.editText!!.text.toString(),
             turmaField.editText!!.text.toString()
         )
+    }
+
+    private fun registerAlert(msg: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Erro no cadastro")
+        builder.setMessage(msg)
+
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            Toast.makeText(applicationContext,
+                android.R.string.ok, Toast.LENGTH_SHORT).show()
+        }
+        builder.show()
     }
 
     fun sendUser(user: User) {

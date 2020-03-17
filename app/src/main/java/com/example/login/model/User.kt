@@ -4,7 +4,7 @@ import java.io.Serializable
 
 class User (
     val nome: String,
-    val sexo: String,
+    val sexo: String = "",
     val email: String,
     val senha: String,
     val telefone: String,
